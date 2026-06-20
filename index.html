@@ -483,7 +483,9 @@ input[type="time"]:focus { border-color: var(--gold); }
   0%   { opacity:1; transform:translate(0,0) scale(1) rotate(0deg); }
   100% { opacity:0; transform:translate(var(--tx),var(--ty)) scale(0.3) rotate(360deg); }
 }
-footer { margin-top:48px; font-size:0.72rem; letter-spacing:0.15em; text-transform:uppercase; color:rgba(253,248,238,0.13); }
+footer { margin-top:48px; font-size:0.72rem; letter-spacing:0.15em; text-transform:uppercase; color:rgba(253,248,238,0.13); text-align:center; }
+.usage-note { margin-top:14px; font-size:0.68rem; letter-spacing:0.02em; text-transform:none; line-height:1.7; color:rgba(253,248,238,0.28); max-width:480px; margin-left:auto; margin-right:auto; }
+.usage-note a { color:rgba(201,168,76,0.55); text-decoration:underline; }
 </style>
 </head>
 <body>
@@ -703,7 +705,10 @@ footer { margin-top:48px; font-size:0.72rem; letter-spacing:0.15em; text-transfo
     </div>
   </div>
 
-  <footer>the universe is always listening</footer>
+  <footer>
+    the universe is always listening
+    <div class="usage-note">Your journal entries save privately in your own browser — nothing is sent or stored elsewhere.<br>For personal use only. Please don't resell, redistribute, or repost this file. Want a custom version? Email <a href="mailto:support@solunagems.us">support@solunagems.us</a> 🌙</div>
+  </footer>
 </div>
 
 <script>
