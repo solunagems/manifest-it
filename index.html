@@ -401,14 +401,6 @@ input[type=range]::-webkit-slider-thumb {
 }
 .entry-delete:hover { color: var(--rose); }
 .journal-empty { text-align: center; font-style: italic; color: var(--muted); padding: 32px 0; font-size: 1rem; }
-.sticker-btn {
-  background: rgba(20,14,35,0.9); border: 1px solid rgba(201,168,76,0.25);
-  border-radius: 50%; width: 38px; height: 38px; font-size: 1.15rem;
-  cursor: pointer; transition: all 0.2s; display:flex; align-items:center; justify-content:center;
-}
-.sticker-btn:hover { background: rgba(201,168,76,0.12); border-color: rgba(201,168,76,0.5); transform: scale(1.08); }
-.sticker-btn.picked { background: rgba(201,168,76,0.25); border-color: var(--gold); transform: scale(1.12); box-shadow: 0 0 12px rgba(201,168,76,0.4); }
-.entry-stickers { font-size: 1rem; letter-spacing: 3px; margin-top: 6px; }
 .new-prompt-btn {
   background: transparent; border: 1px solid rgba(201,168,76,0.28);
   color: var(--gold); padding: 6px 14px; border-radius: 20px;
@@ -483,9 +475,7 @@ input[type="time"]:focus { border-color: var(--gold); }
   0%   { opacity:1; transform:translate(0,0) scale(1) rotate(0deg); }
   100% { opacity:0; transform:translate(var(--tx),var(--ty)) scale(0.3) rotate(360deg); }
 }
-footer { margin-top:48px; font-size:0.72rem; letter-spacing:0.15em; text-transform:uppercase; color:rgba(253,248,238,0.13); text-align:center; }
-.usage-note { margin-top:14px; font-size:0.68rem; letter-spacing:0.02em; text-transform:none; line-height:1.7; color:rgba(253,248,238,0.28); max-width:480px; margin-left:auto; margin-right:auto; }
-.usage-note a { color:rgba(201,168,76,0.55); text-decoration:underline; }
+footer { margin-top:48px; font-size:0.72rem; letter-spacing:0.15em; text-transform:uppercase; color:rgba(253,248,238,0.13); }
 </style>
 </head>
 <body>
@@ -581,18 +571,15 @@ footer { margin-top:48px; font-size:0.72rem; letter-spacing:0.15em; text-transfo
     <div class="journal-input-box">
       <div class="journal-prompt"><span>Today's Prompt</span><span id="journal-prompt-text"></span></div>
       <textarea class="journal-textarea" id="journal-textarea" placeholder="I am grateful for…"></textarea>
-      <div class="sticker-row" id="sticker-row" style="display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 14px;justify-content:center;"></div>
       <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
         <button class="journal-save-btn" style="flex:1;" onclick="saveEntry()">✦ Save Entry</button>
         <button class="new-prompt-btn" onclick="newPrompt()">New prompt ↻</button>
       </div>
     </div>
-    <div class="journal-entries" id="journal-entries"></div>
-    <div style="text-align:center;margin-top:28px;padding-top:18px;border-top:1px solid rgba(201,168,76,0.18);font-size:0.85rem;font-style:italic;color:var(--muted);">
-      <div style="font-size:1.3rem;margin-bottom:6px;letter-spacing:4px;">🌙 ✨ 💌 ✨ 🌙</div>
-      Want any tweaks, an update, or a version tailored just for you?<br>
-      Email <a href="mailto:support@solunagems.us" style="color:var(--gold);text-decoration:underline;font-style:normal;">support@solunagems.us</a> 💜
+    <div style="display:flex;justify-content:flex-end;margin-bottom:10px;">
+      <button class="new-prompt-btn" onclick="exportEntries()">⬇ Download My Entries</button>
     </div>
+    <div class="journal-entries" id="journal-entries"></div>
   </div>
 
   <!-- ═══ GUIDE ═══ -->
@@ -705,10 +692,7 @@ footer { margin-top:48px; font-size:0.72rem; letter-spacing:0.15em; text-transfo
     </div>
   </div>
 
-  <footer>
-    the universe is always listening
-    <div class="usage-note">Your journal entries save privately in your own browser — nothing is sent or stored elsewhere.<br>For personal use only. Please don't resell, redistribute, or repost this file. Want a custom version? Email <a href="mailto:support@solunagems.us">support@solunagems.us</a> 🌙</div>
-  </footer>
+  <footer>the universe is always listening</footer>
 </div>
 
 <script>
@@ -846,7 +830,7 @@ const freqData = [
     benefits: ['Pain relief','Grounding','Security','Stress reduction'],
     speed: '0.6s',
     baseFreq: 174,
-    style: 'tone',
+    mp3Url: 'https://archive.org/download/solfeggio-frequencies/174%20Hz.mp3',
     duration: '5–10 min',
     durationTip: 'Best for grounding before sleep or when feeling anxious',
   },
@@ -858,7 +842,7 @@ const freqData = [
     benefits: ['Cellular repair','Energy healing','Rejuvenation','Vitality'],
     speed: '0.65s',
     baseFreq: 285,
-    style: 'tone',
+    mp3Url: 'https://archive.org/download/solfeggio-frequencies/285%20Hz.mp3',
     duration: '10–15 min',
     durationTip: 'Listen in the morning to energize and restore your body',
   },
@@ -870,7 +854,7 @@ const freqData = [
     benefits: ['Release fear','Clear guilt','Liberation','Emotional cleanse'],
     speed: '0.7s',
     baseFreq: 396,
-    style: 'tone',
+    mp3Url: 'https://archive.org/download/solfeggio-frequencies/396%20Hz.mp3',
     duration: '10–20 min',
     durationTip: 'Use when releasing heavy emotions or fear — let it all go',
   },
@@ -882,7 +866,7 @@ const freqData = [
     benefits: ['Release trauma','Embrace change','New beginnings','Cleansing'],
     speed: '0.75s',
     baseFreq: 417,
-    style: 'tone',
+    mp3Url: 'https://archive.org/download/solfeggio-frequencies/417%20Hz.mp3',
     duration: '15–20 min',
     durationTip: 'Play during journaling or before starting something new',
   },
@@ -894,7 +878,6 @@ const freqData = [
     benefits: ['Deep calm','Heart opening','Clarity','Universal harmony'],
     speed: '0.8s',
     baseFreq: 432,
-    style: 'tone',
     duration: '20–30 min',
     durationTip: 'Perfect background tone for your full manifesting ritual',
   },
@@ -906,21 +889,9 @@ const freqData = [
     benefits: ['DNA healing','Love energy','Miracles','Transformation'],
     speed: '0.55s',
     baseFreq: 528,
-    style: 'tone',
+    mp3Url: 'https://archive.org/download/solfeggio-frequencies/528%20Hz.mp3',
     duration: '15–30 min',
     durationTip: 'The love frequency — ideal while writing affirmations',
-  },
-  {
-    hz: 888,
-    name: 'Manifestation & Infinite Abundance',
-    tag: 'The Manifestation Frequency',
-    desc: 'Tied to the angel number of infinite abundance, 888 Hz is used to align your energy with wealth, opportunity, and manifestation. It opens the channel between intention and receiving.',
-    benefits: ['Manifestation','Abundance','Wealth flow','Aligned receiving'],
-    speed: '0.5s',
-    baseFreq: 888,
-    style: 'chime',
-    duration: '15–30 min',
-    durationTip: 'Play while visualizing your desire as already manifested',
   },
   {
     hz: 639,
@@ -930,7 +901,7 @@ const freqData = [
     benefits: ['Attract love','Harmony','Communication','Empathy'],
     speed: '0.7s',
     baseFreq: 639,
-    style: 'tone',
+    mp3Url: 'https://archive.org/download/solfeggio-frequencies/639%20Hz.mp3',
     duration: '15–20 min',
     durationTip: 'Listen before important conversations or social situations',
   },
@@ -942,7 +913,7 @@ const freqData = [
     benefits: ['Intuition','Self-expression','Detox','Mental clarity'],
     speed: '0.65s',
     baseFreq: 741,
-    style: 'tone',
+    mp3Url: 'https://archive.org/download/solfeggio-frequencies/741%20Hz.mp3',
     duration: '10–20 min',
     durationTip: 'Use during meditation or when seeking clarity and answers',
   },
@@ -954,7 +925,7 @@ const freqData = [
     benefits: ['Third eye','Spiritual growth','Awareness','Inner strength'],
     speed: '0.6s',
     baseFreq: 852,
-    style: 'chime',
+    mp3Url: 'https://archive.org/download/solfeggio-frequencies/852%20Hz.mp3',
     duration: '10–20 min',
     durationTip: 'Use to reconnect with your intuition and spiritual self',
   },
@@ -966,7 +937,7 @@ const freqData = [
     benefits: ['Pineal activation','Pure consciousness','Oneness','Enlightenment'],
     speed: '0.5s',
     baseFreq: 963,
-    style: 'chime',
+    mp3Url: 'https://archive.org/download/solfeggio-frequencies/963%20Hz.mp3',
     duration: '10–15 min',
     durationTip: 'Best for deep meditation — close your eyes and surrender',
   },
@@ -981,33 +952,11 @@ function getAudioCtx() {
   return audioCtx;
 }
 
-// Shared reverb send (built once, reused by every tone/chime)
-let reverbNode = null;
-function getReverb() {
-  if (reverbNode) return reverbNode;
-  const ctx = getAudioCtx();
-  const convolver = ctx.createConvolver();
-  const duration = 2.6;
-  const rate = ctx.sampleRate;
-  const length = rate * duration;
-  const impulse = ctx.createBuffer(2, length, rate);
-  for (let ch = 0; ch < 2; ch++) {
-    const data = impulse.getChannelData(ch);
-    for (let i = 0; i < length; i++) {
-      // Decaying white noise = a soft, natural-sounding hall tail
-      data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, 2.2);
-    }
-  }
-  convolver.buffer = impulse;
-  convolver.connect(ctx.destination);
-  reverbNode = convolver;
-  return convolver;
-}
-
 function unlockAudio() {
-  // Resume/create the AudioContext inside a user gesture (required by iOS/mobile browsers)
-  const ctx = getAudioCtx();
-  const finishUnlock = () => {
+  // Create and immediately pause a silent audio to unlock iOS
+  const silentAudio = new Audio("data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4LjI5LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAADhgCenp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6e////////////////////////////////////////////////////////////////AAAAAExhdmM1OC41AAAAAAAAAAAAAAAAJAAAAAAAAAOD");
+  silentAudio.play().then(() => {
+    silentAudio.pause();
     audioUnlocked = true;
     const banner = document.getElementById('audio-unlock-banner');
     banner.style.background = 'linear-gradient(135deg,#2a5a2a,#4a9a4a)';
@@ -1015,12 +964,11 @@ function unlockAudio() {
     banner.querySelector('div div').textContent = 'Sound Enabled!';
     banner.querySelector('div div:last-child').textContent = 'You can now play any frequency below';
     document.getElementById('unlock-status').textContent = '✓';
-  };
-  if (ctx.state === 'suspended') {
-    ctx.resume().then(finishUnlock).catch(finishUnlock);
-  } else {
-    finishUnlock();
-  }
+  }).catch(() => {
+    // Still mark as unlocked - user tapped
+    audioUnlocked = true;
+    document.getElementById('unlock-status').textContent = '✓';
+  });
 }
 
 function buildFreqCards() {
@@ -1073,119 +1021,20 @@ function buildFreqCards() {
   });
 }
 
-// Audio engine — two flavors: soft sustained tone, and gentle bell chime
-const chimeIntervals = {};
-const toneNodes = {};
-const toneGains = {};
-const toneLfos = {};
-// Soft bell partials (toned way down + mellower so it doesn't hurt)
-const bellPartials = [
-  { ratio: 1,    gain: 1.0  },
-  { ratio: 2.0,  gain: 0.28 },
-  { ratio: 2.76, gain: 0.14 },
-];
+// Audio elements pool
+const audioElements = {};
 
-function strikeChime(idx) {
-  const ctx = getAudioCtx();
-  const f = freqData[idx];
-  const sliderEl = document.getElementById('vol-' + idx);
-  const vol = (sliderEl ? sliderEl.value : 60) / 100;
-  const now = ctx.currentTime;
-  const decayTime = 3.6;
-
-  const masterGain = ctx.createGain();
-  const dryGain = ctx.createGain();
-  const wetGain = ctx.createGain();
-  masterGain.gain.setValueAtTime(0, now);
-  dryGain.gain.setValueAtTime(0.8, now);
-  wetGain.gain.setValueAtTime(0.4, now);
-  masterGain.connect(dryGain);
-  masterGain.connect(wetGain);
-  dryGain.connect(ctx.destination);
-  wetGain.connect(getReverb());
-
-  bellPartials.forEach(p => {
-    const osc = ctx.createOscillator();
-    const partialGain = ctx.createGain();
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(f.baseFreq * p.ratio, now);
-    partialGain.gain.setValueAtTime(0, now);
-    partialGain.gain.linearRampToValueAtTime(p.gain, now + 0.02);
-    partialGain.gain.exponentialRampToValueAtTime(0.0008, now + decayTime);
-    osc.connect(partialGain);
-    partialGain.connect(masterGain);
-    osc.start(now);
-    osc.stop(now + decayTime + 0.1);
-  });
-
-  // Much gentler ceiling than before — this was the "it hurts" culprit
-  masterGain.gain.linearRampToValueAtTime(vol * 0.35, now + 0.02);
-}
-
-function startTone(idx) {
-  const ctx = getAudioCtx();
-  const f = freqData[idx];
-  const sliderEl = document.getElementById('vol-' + idx);
-  const vol = (sliderEl ? sliderEl.value : 60) / 100;
-  const now = ctx.currentTime;
-  const targetLevel = vol * 0.22;
-
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain(); // master level (volume slider + fade-in)
-  const tremoloGain = ctx.createGain(); // wobbles to create the singing-bowl pulse
-  const dryGain = ctx.createGain();
-  const wetGain = ctx.createGain();
-
-  osc.type = 'sine';
-  osc.frequency.setValueAtTime(f.baseFreq, now);
-
-  gain.gain.setValueAtTime(0, now);
-  gain.gain.linearRampToValueAtTime(targetLevel, now + 1.2); // slow, soft fade-in
-
-  // Tremolo: a slow LFO gently pulsing the volume, like a singing bowl's natural wobble
-  const lfo = ctx.createOscillator();
-  const lfoDepth = ctx.createGain();
-  lfo.type = 'sine';
-  lfo.frequency.setValueAtTime(0.18, now); // slow wobble (~5.5 sec cycle)
-  lfoDepth.gain.setValueAtTime(0.18, now); // wobble depth
-  tremoloGain.gain.setValueAtTime(1, now);
-  lfo.connect(lfoDepth);
-  lfoDepth.connect(tremoloGain.gain);
-  lfo.start(now);
-
-  // Dry/wet split for reverb send
-  dryGain.gain.setValueAtTime(0.75, now);
-  wetGain.gain.setValueAtTime(0.5, now);
-
-  osc.connect(gain);
-  gain.connect(tremoloGain);
-  tremoloGain.connect(dryGain);
-  tremoloGain.connect(wetGain);
-  dryGain.connect(ctx.destination);
-  wetGain.connect(getReverb());
-
-  osc.start(now);
-
-  toneNodes[idx] = osc;
-  toneGains[idx] = gain;
-  toneLfos[idx] = lfo;
-}
-
-function stopTone(idx) {
-  const ctx = getAudioCtx();
-  const osc = toneNodes[idx];
-  const gain = toneGains[idx];
-  const lfo = toneLfos[idx];
-  if (osc && gain) {
-    gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.6);
-    osc.stop(ctx.currentTime + 0.65);
+function getAudio(idx) {
+  if (!audioElements[idx]) {
+    const f = freqData[idx];
+    const audio = new Audio();
+    audio.src = f.mp3Url;
+    audio.loop = true;
+    audio.volume = 0.7;
+    audio.preload = 'none';
+    audioElements[idx] = audio;
   }
-  if (lfo) {
-    lfo.stop(ctx.currentTime + 0.65);
-  }
-  delete toneNodes[idx];
-  delete toneGains[idx];
-  delete toneLfos[idx];
+  return audioElements[idx];
 }
 
 function toggleFreq(idx) {
@@ -1193,33 +1042,31 @@ function toggleFreq(idx) {
 }
 
 function playFreq(idx) {
-  const ctx = getAudioCtx();
-  if (ctx.state === 'suspended') { ctx.resume(); }
-  const f = freqData[idx];
+  const audio = getAudio(idx);
+  const sliderVal = document.getElementById('vol-' + idx).value;
+  audio.volume = sliderVal / 100;
 
-  if (f.style === 'chime') {
-    strikeChime(idx);
-    chimeIntervals[idx] = setInterval(() => strikeChime(idx), 4000);
-  } else {
-    startTone(idx);
+  const playPromise = audio.play();
+  if (playPromise !== undefined) {
+    playPromise.then(() => {
+      activeNodes[idx] = true;
+      document.getElementById('fcard-' + idx).classList.add('playing');
+      document.getElementById('pbtn-' + idx).classList.add('active');
+      document.getElementById('picon-' + idx).textContent = '■';
+      document.getElementById('plabel-' + idx).textContent = 'Stop';
+    }).catch(err => {
+      console.log('Audio play failed:', err);
+      document.getElementById('reminder-status') && 
+        (document.getElementById('plabel-' + idx).textContent = 'Tap unlock first');
+    });
   }
-  activeNodes[idx] = true;
-
-  document.getElementById('fcard-' + idx).classList.add('playing');
-  document.getElementById('pbtn-' + idx).classList.add('active');
-  document.getElementById('picon-' + idx).textContent = '■';
-  document.getElementById('plabel-' + idx).textContent = 'Stop';
 }
 
 function stopFreq(idx) {
-  const f = freqData[idx];
-  if (f.style === 'chime') {
-    if (chimeIntervals[idx]) {
-      clearInterval(chimeIntervals[idx]);
-      delete chimeIntervals[idx];
-    }
-  } else {
-    stopTone(idx);
+  const audio = audioElements[idx];
+  if (audio) {
+    audio.pause();
+    audio.currentTime = 0;
   }
   delete activeNodes[idx];
   document.getElementById('fcard-' + idx).classList.remove('playing');
@@ -1230,11 +1077,9 @@ function stopFreq(idx) {
 
 function setVol(idx, val) {
   document.getElementById('vol-' + idx).style.setProperty('--val', val + '%');
-  const ctx = getAudioCtx();
-  if (toneGains[idx]) {
-    toneGains[idx].gain.linearRampToValueAtTime((val / 100) * 0.22, ctx.currentTime + 0.1);
+  if (audioElements[idx]) {
+    audioElements[idx].volume = val / 100;
   }
-  // Chime volume is read live from the slider on each strike — no extra work needed.
 }
 
 
@@ -1361,34 +1206,6 @@ function getMoonEmojiNow() {
   return getPhaseForAge(getMoonPhase(new Date())).emoji;
 }
 
-// ── Cute stickers for journal entries ──
-const journalStickers = ['💖','🌙','✨','🦋','💫','🌸','🔮','🥰','🌺','💌','🧿','🌷'];
-let pickedStickers = [];
-
-function buildStickerRow() {
-  const row = document.getElementById('sticker-row');
-  row.innerHTML = journalStickers.map(s =>
-    `<button class="sticker-btn" data-sticker="${s}" onclick="toggleSticker('${s}', this)">${s}</button>`
-  ).join('');
-}
-
-function toggleSticker(sticker, btn) {
-  const i = pickedStickers.indexOf(sticker);
-  if (i > -1) {
-    pickedStickers.splice(i, 1);
-    btn.classList.remove('picked');
-  } else {
-    if (pickedStickers.length >= 4) return; // keep it cute, not cluttered
-    pickedStickers.push(sticker);
-    btn.classList.add('picked');
-  }
-}
-
-function resetStickerPicker() {
-  pickedStickers = [];
-  document.querySelectorAll('.sticker-btn.picked').forEach(b => b.classList.remove('picked'));
-}
-
 function saveEntry() {
   const text = document.getElementById('journal-textarea').value.trim();
   if (!text) { document.getElementById('journal-textarea').focus(); return; }
@@ -1399,13 +1216,11 @@ function saveEntry() {
     date: new Date().toLocaleDateString('en-US',{weekday:'short', month:'long', day:'numeric', year:'numeric'}),
     moon: getMoonEmojiNow(),
     prompt: prompts[currentPromptIdx],
-    stickers: [...pickedStickers],
   };
   entries.unshift(entry);
   saveEntries(entries);
   document.getElementById('journal-textarea').value = '';
   newPrompt();
-  resetStickerPicker();
   renderEntries();
 }
 
@@ -1413,6 +1228,27 @@ function deleteEntry(id) {
   const entries = loadEntries().filter(e => e.id !== id);
   saveEntries(entries);
   renderEntries();
+}
+
+function exportEntries() {
+  const entries = loadEntries();
+  if (!entries.length) { alert('No entries yet to download ✦'); return; }
+  let text = '✦ MY GRATITUDE & MANIFESTATION JOURNAL ✦\n\n';
+  entries.forEach(e => {
+    text += `${e.date}  ${e.moon}\n`;
+    text += `Prompt: ${e.prompt}\n`;
+    text += `${e.text}\n`;
+    text += '\n──────────────────────\n\n';
+  });
+  const blob = new Blob([text], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'my-manifestation-journal.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }
 
 function renderEntries() {
@@ -1433,14 +1269,12 @@ function renderEntries() {
         <span class="entry-moon">${e.moon}</span>
       </div>
       <div class="entry-text">${e.text.replace(/\n/g,'<br>')}</div>
-      ${e.stickers && e.stickers.length ? `<div class="entry-stickers">${e.stickers.join(' ')}</div>` : ''}
     </div>
   `).join('');
 }
 
 // Init journal
 document.getElementById('journal-prompt-text').textContent = prompts[currentPromptIdx];
-buildStickerRow();
 renderEntries();
 
 buildFreqCards();
